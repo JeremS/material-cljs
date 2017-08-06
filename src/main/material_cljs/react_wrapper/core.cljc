@@ -70,11 +70,16 @@
         (if (string? class)
           (dom-factory class)
           (let [key-fn (:key-fn opts (constantly nil))]
-            (fn [props & children]
-              (let [react-props (wrap props)
-                    ref (:ref props nil)]
-                (o/set react-props "ref" ref)
-                (when-let [key (key-fn props)]
+            (fn [& args]
+              (let [[props children] (if (map? (first args))
+                                       [(first args) (rest args)]
+                                       [{} args])
+                    key (key-fn props)
+                    react-props (wrap (cond-> props
+                                              (and key-fn (keyword? key-fn))
+                                              (dissoc key-fn)))]
+                (o/set react-props "ref" (:ref props nil))
+                (when key
                   (o/set react-props "key" key))
                 (createElement
                   class
