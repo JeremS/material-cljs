@@ -101,7 +101,7 @@
 ;; TODO: maybe handle input value see goog.dom.selection to handle cursor position
 ;; TODO: handle validation
 ;; TODO: handle onChange on input
-;; TODO: maybe use specs
+
 
 (defn textfield-input [c props]
   (let [ctor (if (:multiline props) dom/textarea dom/input)
