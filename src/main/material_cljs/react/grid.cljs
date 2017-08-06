@@ -30,7 +30,7 @@
     :bottom "bottom"
     ""))
 
-(def cell-classes-dispatch
+(def cell-props->mdc-classes
   {:span make-span-class
    :span-tablet #(make-span-class % "-tablet")
    :span-phone #(make-span-class % "-phone")
@@ -40,11 +40,12 @@
 (defn cell-classes [props]
   (u/mdc-classes
     "mdc-layout-grid__cell"
-    (u/mdc-classes-from-props props cell-classes-dispatch)))
+    (u/mdc-classes-from-props props cell-props->mdc-classes)))
 
 (w/def-component GridCell
   (render [this]
-   (let [props (w/props this)]
-     (u/render-container this dom/div {:className (cell-classes props)}))))
+    (let [props (w/props this)]
+      (u/render-container this dom/div {:className (cell-classes props)
+                                        ::u/props-filter (keys cell-props->mdc-classes)}))))
 
 (def mdc-grid-cell (w/factory GridCell))
