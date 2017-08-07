@@ -124,7 +124,7 @@
     (let [props (u/ensure-props (w/props this) default-media-item-properties)
           element (:element props)]
       (u/render-container this element {:className (card-media-classes props)
-                                        ::u/props-filter (keys default-media-item-properties)}))))
+                                        ::u/props-filter #{:height :element}}))))
 
 (s/def ::element #(not (nil? %)))
 (s/def ::height #{:1 :1.5 :2 :3})
