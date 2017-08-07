@@ -12,8 +12,6 @@
             [material-cljs.react.elevation :as elevation]
             [material-cljs.react.card :as card]))
 
-
-;; TODO: maybe use specs to validate props presence and values
 ;; TODO: find a way to assign react keys to component that don't have one in their props
 
 (enable-console-print!)

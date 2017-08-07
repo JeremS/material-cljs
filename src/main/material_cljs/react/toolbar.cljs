@@ -8,6 +8,8 @@
     ["@material/toolbar/foundation" :as toolbar-f]))
 
 
+;; TODO: Spec components
+
 ;; TODO: implement the rest of the options possible on toolbars
 ;; TODO: implement toolbar icons
 ;; TODO: toolbar fixed

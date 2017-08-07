@@ -4,6 +4,8 @@
     [material-cljs.react-wrapper.core :as w]
     [material-cljs.dom-helpers :as dom]))
 
+;; TODO: Spec components
+
 (w/def-component Grid
   (render [this]
           (u/render-container this dom/div {:className "mdc-layout-grid"})))

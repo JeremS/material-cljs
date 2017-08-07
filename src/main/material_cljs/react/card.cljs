@@ -5,6 +5,7 @@
     [material-cljs.dom-helpers :as dom]
     [material-cljs.react.button :refer [mdc-button]]))
 
+;; TODO: Spec components
 
 ;; TODO: Try to fix the display of supporting text in horizontal cards
 ;; ---------------------------------------------------------------------------------------------------------------------
