@@ -65,11 +65,11 @@
 
      (defn factory
        ([class]
-        (factory class {:key-fn :key}))
+        (factory class nil))
        ([class opts]
         (if (string? class)
           (dom-factory class)
-          (let [key-fn (:key-fn opts (constantly nil))
+          (let [key-fn (:key-fn opts :key)
                 spec (:props-spec opts)]
             (fn [& args]
               (let [[props children] (if (map? (first args))
