@@ -21,7 +21,7 @@
 
 
 
-(s/def ::z (and int? #(< 0 % 25)))
+(s/def ::z (s/and int? #(< 0 % 25)))
 (s/def ::element fn?)
 (s/def ::elevation-props (s/keys :opt-un [::z ::element]))
 
