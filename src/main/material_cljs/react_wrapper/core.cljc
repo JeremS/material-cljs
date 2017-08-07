@@ -176,7 +176,8 @@
 
 
 (s/def ::def-constructor-opts (s/alt :opts (s/cat :key #(= :opts %) :val map?)
-                                     :spec (s/cat :key #(= :spec %) :val keyword?)))
+                                     :spec (s/cat :key #(= :spec %) :val keyword?)
+                                     :wrap (s/cat :key #(= :wrap %) :val any?)))
 
 (s/def ::def-constructor-args (s/cat :name symbol?
                                      :class symbol?
@@ -184,16 +185,27 @@
 
 #?(:clj
    (do
+     (defn make-factory [class opts]
+       (let [spec (:spec opts)
+             factory-opts (cond-> (:opts opts {})
+                                  spec (assoc :props-spec spec))
+
+             factory `(factory ~class ~factory-opts)
+
+             factory (if-let [wrap (:wrap opts)]
+                       `(~wrap ~factory)
+                       factory)
+
+             factory (if spec
+                       `(with-meta ~factory {:props-spec ~spec})
+                       factory)]
+         factory))
+
      (defmacro def-constructor [& args]
        (let [{:keys [name class opts]} (s/conform ::def-constructor-args args)
              opts (into {} (comp (map second) (map #(vector (:key %) (:val %)))) opts)
-             spec (:spec opts)
-             factory-opts (cond-> (:opts opts {})
-                                  spec (assoc :props-spec spec))
-             factory `(factory ~class ~factory-opts)]
-         `(def ~name ~(if spec
-                        `(with-meta ~factory {:props-spec ~spec})
-                         factory))))
+             factory (make-factory class opts)]
+         `(def ~name ~factory)))
 
 
      (s/fdef def-constructor
