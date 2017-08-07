@@ -1,11 +1,10 @@
 (ns material-cljs.react.card
   (:require
+    [clojure.spec.alpha :as s]
     [material-cljs.utils :as u]
     [material-cljs.react-wrapper.core :as w]
     [material-cljs.dom-helpers :as dom]
     [material-cljs.react.button :refer [mdc-button]]))
-
-;; TODO: Spec components
 
 ;; TODO: Try to fix the display of supporting text in horizontal cards
 ;; ---------------------------------------------------------------------------------------------------------------------
@@ -21,7 +20,11 @@
       (u/render-container this dom/div {:className (card-classes props)
                                         ::u/props-filter [:horizontal]}))))
 
-(def mdc-card (w/factory Card))
+(s/def ::horizontal boolean?)
+(s/def ::card-props (s/keys :opt-un [::horizontal]))
+
+
+(w/def-constructor mdc-card Card :spec ::card-props)
 
 
 ;; ---------------------------------------------------------------------------------------------------------------------
@@ -29,7 +32,9 @@
   (render [this]
     (u/render-container this dom/section {:className "mdc-card__primary"})))
 
-(def mdc-card-header (w/factory CardHeader))
+(w/def-constructor mdc-card-header CardHeader)
+
+
 
 ;; ---------------------------------------------------------------------------------------------------------------------
 (defn card-title-classes [props]
@@ -44,22 +49,24 @@
       (u/render-container this dom/h1 {:className (card-title-classes props)
                                        ::u/props-filter [:large-title]}))))
 
-(def mdc-card-title (w/factory CardTitle))
+(s/def ::large-title boolean?)
+(s/def ::card-title-props (s/keys :opt-un [::large-title]))
 
+(w/def-constructor mdc-card-title CardTitle :spec ::card-title-props)
 
 ;; ---------------------------------------------------------------------------------------------------------------------
 (w/def-component CardSubTitle
   (render [this]
     (u/render-container this dom/h2 {:className "mdc-card__subtitle"})))
 
-(def mdc-card-sub-title (w/factory CardSubTitle))
+(w/def-constructor mdc-card-sub-title CardSubTitle)
 
 ;; ---------------------------------------------------------------------------------------------------------------------
 (w/def-component CardText
   (render [this]
     (u/render-container this dom/section {:className "mdc-card__supporting-text"})))
 
-(def mdc-card-text (w/factory CardText))
+(w/def-constructor mdc-card-text CardText)
 
 
 ;; ---------------------------------------------------------------------------------------------------------------------
@@ -76,7 +83,10 @@
       (u/render-container this dom/section {:className (card-action-classes props)
                                             ::u/props-filter [:vertical]}))))
 
-(def mdc-card-actions (w/factory CardActions))
+(s/def ::vertical boolean?)
+(s/def ::card-actions-props (s/keys :opt-un [::vertical]))
+
+(w/def-constructor mdc-card-actions CardActions :spec ::card-actions-props)
 
 ;; ---------------------------------------------------------------------------------------------------------------------
 (w/def-component CardActionButton
@@ -84,7 +94,7 @@
     (u/render-container this mdc-button {:className "mdc-card__action"
                                          :compact true})))
 
-(def mdc-card-action-button (w/factory CardActionButton))
+(w/def-constructor mdc-card-action-button CardActionButton)
 
 ;; ---------------------------------------------------------------------------------------------------------------------
 (def default-media-item-properties
@@ -116,4 +126,10 @@
       (u/render-container this element {:className (card-media-classes props)
                                         ::u/props-filter (keys default-media-item-properties)}))))
 
-(def mdc-card-media-item (w/factory MediaItem))
+(s/def ::element #(not (nil? %)))
+(s/def ::height #{:1 :1.5 :2 :3})
+(s/def ::card-media-item-props (s/keys :req-un [::element]
+                                       :opt-un [::height]))
+
+(w/def-constructor mdc-card-media-item MediaItem
+  :spec ::card-media-item-props)
