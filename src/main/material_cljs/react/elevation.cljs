@@ -1,10 +1,9 @@
 (ns material-cljs.react.elevation
   (:require
+    [clojure.spec.alpha :as s]
     [material-cljs.utils :as u]
     [material-cljs.react-wrapper.core :as w]
     [material-cljs.dom-helpers :as dom]))
-
-;; TODO: Spec components
 
 
 (def default-props
@@ -16,11 +15,15 @@
 
 (w/def-component Elevation
   (render [this]
-    (let [{:keys [element z] :as props} (u/ensure-props (w/props this) default-props)
-          pass-down-props (u/remove-props props [:z :element])
-          css-classes (u/merge-classes (make-elevation-class z)
-                                       (:className pass-down-props ""))]
-      (element (assoc pass-down-props :className css-classes)
-               (w/children this)))))
+    (let [{:keys [element z] :as props} (u/ensure-props (w/props this) default-props)]
+      (u/render-container this element {:className (make-elevation-class z)
+                                        ::u/props-filter #{:z :element}}))))
 
-(def mdc-elevation (w/factory Elevation))
+
+
+(s/def ::z (and int? #(< 0 % 25)))
+(s/def ::element fn?)
+(s/def ::elevation-props (s/keys :opt-un [::z ::element]))
+
+
+(w/def-constructor mdc-elevation Elevation :spec ::elevation-props)
