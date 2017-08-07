@@ -1,17 +1,12 @@
 (ns material-cljs.react.textfield
   (:require
     [goog.object :as o]
+    [clojure.spec.alpha :as s]
     [material-cljs.utils :as u]
     [material-cljs.react-wrapper.core :as w]
     [material-cljs.dom-helpers :as dom]
     [material-cljs.react.impl.adapters :as adapters]
-
-    [clojure.spec.alpha :as s]
-
     ["@material/textfield/foundation" :as tfield-f]))
-
-;; TODO: Spec components
-
 
 (def foundation-c (o/get tfield-f "default"))
 
@@ -63,17 +58,6 @@
 
 
 
-(s/def ::multiline boolean?)
-(s/def ::help-text-persistent boolean?)
-(s/def ::textbox boolean?)
-(s/def ::full-width boolean?)
-
-
-(s/def ::textfield-props
-  (s/keys :opt-un [::multiline ::help-text-persistent ::textbox ::full-width]))
-
-
-
 (def defaultprops
   {:name ""
    :label ""
@@ -83,9 +67,6 @@
    :help-text-persistent false
    :textbox false
    :full-width false})
-
-
-
 
 (def text-field-props (set (keys defaultprops)))
 
@@ -186,4 +167,19 @@
           (text-field-help-text this props state))))))
 
 
-(def mdc-text-field (w/factory TextField {:key-fn :id}))
+
+(s/def ::name string?)
+(s/def ::label string?)
+(s/def ::help-text string?)
+(s/def ::multiline boolean?)
+(s/def ::help-text-persistent boolean?)
+(s/def ::textbox boolean?)
+(s/def ::full-width boolean?)
+
+
+(s/def ::textfield-props
+  (s/keys :opt-un [::multiline ::help-text-persistent ::textbox ::full-width]))
+
+(w/def-constructor mdc-text-field TextField
+  :opts {:key-fn :id}
+  :spec ::textfield-props)
