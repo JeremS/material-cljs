@@ -22,11 +22,11 @@
   :plugins [[lein-cljsbuild "1.1.6"]]
 
   :profiles {:dev {:dependencies [[binaryage/devtools "0.9.4"]
-
-                                  [devcards "0.2.3"]]}}
+                                  [devcards "0.2.3"]]
+                   :source-paths ["src/dev"]}}
 
   :cljsbuild {:builds [{:id           "dev"
-                        :source-paths ["src/main"]
+                        :source-paths ["src/main" "src/dev"]
                         :figwheel     true
                         :compiler     {:main "material-cljs.core"
                                        :asset-path "js/dev_out"
@@ -41,7 +41,7 @@
                                        :npm-deps {:react "15.6.1"
                                                   :react-dom "15.6.1"
                                                   :material-components-web "0.16.0"}
-                                       :preloads [devtools.preload]
+                                       :preloads [devtools.preload material-cljs.global]
                                        :external-config
                                        {:devtools/config
                                         {:features-to-install [:formatters :hints]}}}}]})

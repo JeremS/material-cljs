@@ -69,27 +69,25 @@
        ([class opts]
         (if (string? class)
           (dom-factory class)
-          (let [key-fn (:key-fn opts (constantly nil))]
+          (let [key-fn (:key-fn opts (constantly nil))
+                spec (:props-spec opts)]
             (fn [& args]
               (let [[props children] (if (map? (first args))
                                        [(first args) (rest args)]
-                                       [{} args])
-                    key (key-fn props)
-                    react-props (wrap (cond-> props
-                                              (and key-fn (keyword? key-fn))
-                                              (dissoc key-fn)))]
-                (o/set react-props "ref" (:ref props nil))
-                (when key
-                  (o/set react-props "key" key))
-                (createElement
-                  class
-                  react-props
-                  (force-children children))))))))))
+                                       [{} args])]
+                (when spec (s/assert spec props))
 
-
-
-
-
+                (let [key (key-fn props)
+                      react-props (wrap (cond-> props
+                                                (and key-fn (keyword? key-fn))
+                                                (dissoc key-fn)))]
+                  (o/set react-props "ref" (:ref props nil))
+                  (when key
+                    (o/set react-props "key" key))
+                  (createElement
+                    class
+                    react-props
+                    (force-children children)))))))))))
 
 
 (s/def ::def-component-method
@@ -177,3 +175,27 @@
              :ret any?)))
 
 
+(s/def ::def-constructor-opts (s/alt :opts (s/cat :key #(= :opts %) :val map?)
+                                     :spec (s/cat :key #(= :spec %) :val keyword?)))
+
+(s/def ::def-constructor-args (s/cat :name symbol?
+                                     :class symbol?
+                                     :opts (s/* ::def-constructor-opts)))
+
+#?(:clj
+   (do
+     (defmacro def-constructor [& args]
+       (let [{:keys [name class opts]} (s/conform ::def-constructor-args args)
+             opts (into {} (comp (map second) (map #(vector (:key %) (:val %)))) opts)
+             spec (:spec opts)
+             factory-opts (cond-> (:opts opts {})
+                                  spec (assoc :props-spec spec))
+             factory `(factory ~class ~factory-opts)]
+         `(def ~name ~(if spec
+                        `(with-meta ~factory {:props-spec ~spec})
+                         factory))))
+
+
+     (s/fdef def-constructor
+             :args ::def-constructor-args
+             :ret any?)))
