@@ -73,11 +73,10 @@
   {:set-style (fn [property value]
                 (.. (o/get v-node attr) -style (setProperty property value)))})
 
-(defn maybe-set-style-management [v-node root-node-name sel]
+(defn maybe-set-style-management [v-node attr]
   {:set-style (fn [property value]
-                (let [dom-root (o/get v-node root-node-name)]
-                  (when-let [maybe-node (dom/query-selector dom-root sel)]
-                    (.. maybe-node -style (setProperty property value)))))})
+                (when-let [dom-node (o/get v-node attr)]
+                  (.. dom-node -style (setProperty property value))))})
 
 ;; inspired from the default implementation
 ;; in @material/base/component.js
