@@ -17,6 +17,9 @@
 (def label (factory "label"))
 (def textarea (factory "textarea"))
 
+(def style (factory "style"))
+
+
 ;; dom events
 (def focus-ev "focus")
 (def blur-ev "blur")

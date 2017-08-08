@@ -10,7 +10,8 @@
             [material-cljs.react.textfield :as tfield]
             [material-cljs.react.button :as button]
             [material-cljs.react.elevation :as elevation]
-            [material-cljs.react.card :as card]))
+            [material-cljs.react.card :as card]
+            [material-cljs.react.icons :as icons]))
 
 ;; TODO: find a way to assign react keys to component that don't have one in their props
 
@@ -18,7 +19,7 @@
 
 
 (defn toolbar []
-  (toolbar/mdc-toolbar {:key "toolbar"}
+  (toolbar/mdc-toolbar {:key "toolbar" :fixed true :waterfall true}
     (toolbar/mdc-toolbar-row {:key "toolbarRow1"}
       (toolbar/mdc-toolbar-section {:key "toolbarRow1Section1"}
         (toolbar/mdc-toolbar-title {:key "toolbarRow1Section1Title"
@@ -130,17 +131,31 @@
 
 
 
+(defn icons []
+  (grid/mdc-grid-inner {:key "iconsLine"}
+    (grid/mdc-grid-cell {:key "icons1" :span 12}
+      (icons/mdc-g-font-icon {:key "i1"} "face")
+      (icons/mdc-g-font-icon {:key "i2" :size 24} "face")
+      (icons/mdc-g-font-icon {:key "i3" :size 36} "face")
+      (icons/mdc-g-font-icon {:key "i4" :size 48} "face")
+      (icons/mdc-g-font-icon {:key "i5" :size 48 :inactive true} "face")
+      (icons/mdc-g-font-icon {:key "i6" :size 48 :light true :style #js {:backgroundColor "black"}} "face")
+      (icons/mdc-g-font-icon {:key "i7" :size 48 :light true :inactive true :style #js {:backgroundColor "black"}} "face")
+      (icons/mdc-g-font-icon {:key "i8" :size 48 :dark true} "face")
+      (icons/mdc-g-font-icon {:key "i9" :size 48 :dark true :inactive true} "face"))))
+
+
 (defn grid []
   (grid/mdc-grid {:key "grid"}
     (textfields)
     (buttons)
     (elevations)
-    (cards)))
-
+    (cards)
+    (icons)))
 
 
 
 (r-dom/render
-  (dom/div nil (toolbar) (grid))
+  (dom/div nil (icons/mdc-icons-font-styles) (toolbar) (grid))
   (.getElementById js/document "app"))
 

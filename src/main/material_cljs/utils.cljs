@@ -54,7 +54,7 @@
   (persistent!
     (reduce (fn [props k]
               (cond-> props
-                      (not (get props k)) (assoc! k (defaultprops k))))
+                      (nil? (get props k nil)) (assoc! k (defaultprops k))))
             (transient props)
             (keys defaultprops))))
 
