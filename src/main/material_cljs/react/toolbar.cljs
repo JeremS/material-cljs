@@ -12,6 +12,7 @@
 ;; TODO: toolbar flexible
 
 ;; TODO: Waterfall doesn't work properly?
+;; TODO: Investigate the scroll events handling there seems to be an issue where the event handlers aren't properly deregistered.
 (def foundation-c (o/get toolbar-f "default"))
 (def foundation "toolbarFoundation_")
 

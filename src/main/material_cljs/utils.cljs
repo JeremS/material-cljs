@@ -61,12 +61,15 @@
 (defn render-container [component ctor default-props]
   (let [given-props (w/props component)
         new-css-classes (merge-classes (:className default-props) (:className given-props))
-        props-filter (::props-filter default-props)]
+        props-filter (::props-filter default-props [])
+        children (if-let [children-processor (::children-processor default-props)]
+                   (w/map-children component children-processor)
+                   (w/children component))]
+
 
     (ctor (-> default-props
               (merge given-props)
               (assoc :className new-css-classes)
-              (cond-> props-filter
-                      (remove-props (conj  props-filter ::props-filter))))
-          (w/children component))))
+              (remove-props (conj props-filter ::props-filter ::children-processor)))
+          children)))
 

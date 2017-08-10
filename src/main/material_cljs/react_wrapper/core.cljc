@@ -4,7 +4,7 @@
   #?(:cljs (:require
              [clojure.spec.alpha :as s]
              [goog.object :as o]
-             ["react/react" :refer [createElement]]
+             ["react/react" :as react :refer [createElement]]
              ["create-react-class" :as cc]))
   #?(:cljs (:require-macros
              [material-cljs.react-wrapper.core])))
@@ -43,6 +43,8 @@
      (defn get-state [c]
        (state-from-react-state (react-state c)))
 
+     (defn react-key [c]
+       (.-key c))
 
      (defn wrap-updater [updater]
        (fn [r-state r-props]
@@ -87,7 +89,15 @@
                   (createElement
                     class
                     react-props
-                    (force-children children)))))))))))
+                    (force-children children)))))))))
+
+     (def react-children react/Children)
+     (def react-map-children (.-map react-children))
+
+     (def react-clone-element react/cloneElement)
+
+     (defn map-children [c f]
+       (react-map-children (children c) f))))
 
 
 (s/def ::def-component-method

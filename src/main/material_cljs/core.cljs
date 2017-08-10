@@ -91,16 +91,35 @@
                                :rows 10
                                :full-width true})))])
 
+
 (defn buttons []
-  (grid/mdc-grid-inner {:key "buttonLine"}
-    (vec
+  [(grid/mdc-grid-inner {:key "buttonLine"}
+     (vec
       (cons (grid/mdc-grid-cell {:span 2 :key "0"}
               (button/mdc-button {:key 0} "normal"))
             (rest
               (map-indexed (fn [i v]
                              (grid/mdc-grid-cell {:span 2 :key i}
                                (button/mdc-button {v true :key i} (name v))))
-                           [:enabled :dense :raised :compact :primary :accented]))))))
+                           [:enabled :dense :raised :compact :primary :accented])))))
+
+   (grid/mdc-grid-inner {:key "fabLine"}
+     (grid/mdc-grid-cell {:key "fab1" :span 3}
+       (button/mdc-fab {:key "fav-button"}
+         (icons/mdc-g-font-icon {:key "fav-button"} "favorite")))
+
+     (grid/mdc-grid-cell {:key "fab2" :span 3}
+       (button/mdc-fab {:key "fav-button" :plain true}
+         (icons/mdc-g-font-icon {:key "fav-button"} "favorite")))
+
+     (grid/mdc-grid-cell {:key "fab3" :span 3}
+       (button/mdc-fab {:key "fav-button" :mini true}
+         (icons/mdc-g-font-icon {:key "fav-button"} "favorite")))
+
+     (grid/mdc-grid-cell {:key "fab4" :span 3}
+       (button/mdc-fab {:key "fav-button" :mini true :plain true}
+         (icons/mdc-g-font-icon {:key "fav-button"} "favorite"))))])
+
 
 (defn elevations []
   [(grid/mdc-grid-inner {:key "elevationLine1"}

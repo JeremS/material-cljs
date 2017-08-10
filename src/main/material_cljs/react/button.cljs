@@ -31,14 +31,48 @@
 
 (w/def-component Button
   (render [this]
-    (let [props (w/props this)
-          button-props (u/remove-props props mdc-button-props)
-          class-names (if-let [cs (:className props)] #{cs} #{})]
-      (dom/button (assoc button-props
-                    :className (u/mdc-classes
-                                 "mdc-button"
-                                 class-names
-                                 (u/mdc-classes-from-props props props->mdc-class)))
-                  (w/children this)))))
+    (let [props (w/props this)]
+      (u/render-container this dom/button {:className (u/mdc-classes
+                                                        "mdc-button"
+                                                        (u/mdc-classes-from-props props props->mdc-class))
+                                           ::u/props-filter mdc-button-props}))))
 
 (w/def-constructor mdc-button Button :spec ::mdc-button-props)
+
+;; ---------------------------------------------------------------------------------------------------------------------
+(s/def ::mini boolean?)
+(s/def ::plain boolean?)
+
+(s/def ::fab-props (s/keys :opt-un [::mini ::plain]))
+
+(def fab-props->icons-mdc-classes
+  {:mini (constantly "mdc-fab--mini")
+   :plain (constantly "mdc-fab--plain")})
+
+(defn process-icon-child [props react-icon-component]
+  (let [mc-props (w/props react-icon-component)
+        passed-css-classes (:className mc-props "")
+        new-props (assoc mc-props
+                    :className
+                    (u/join-classes [passed-css-classes "mdc-fab__icon"]))]
+    (w/react-clone-element react-icon-component
+                           (w/wrap new-props)
+                           (w/children react-icon-component))))
+
+(w/def-component Fab
+  (render [this]
+    (let [props (w/props this)]
+      (u/render-container this dom/button
+                          {:className (u/mdc-classes
+                                        "mdc-fab"
+                                        (u/mdc-classes-from-props props
+                                          fab-props->icons-mdc-classes))
+                           ::u/props-filter [:mini :plain]
+                           ::u/children-processor #(process-icon-child props %)}))))
+
+
+
+(w/def-constructor mdc-fab Fab :spec ::fab-props)
+
+
+;; TODO: Icon toogle
