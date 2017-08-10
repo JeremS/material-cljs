@@ -9,10 +9,9 @@
     ["@material/toolbar/foundation" :as toolbar-f]))
 
 
-;; TODO: implement toolbar icons
 ;; TODO: toolbar flexible
 
-;; TODO: Waterfall doesn't work properly
+;; TODO: Waterfall doesn't work properly?
 (def foundation-c (o/get toolbar-f "default"))
 (def foundation "toolbarFoundation_")
 
@@ -168,8 +167,6 @@
 
 
 ;; ---------------------------------------------------------------------------------------------------------------------
-
-;; TODO: define component for icons
 
 (s/def ::icon-ctor fn?)
 (s/def ::menu boolean?)
