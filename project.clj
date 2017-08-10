@@ -8,8 +8,7 @@
             :url "http://www.eclipse.org/legal/epl-v10.html"}
 
   :dependencies [[org.clojure/clojure "1.9.0-alpha17"]
-                 [org.clojure/clojurescript "1.9.859"]
-                 [figwheel-sidecar "0.5.12-SNAPSHOT"]]
+                 [org.clojure/clojurescript "1.9.859"]]
 
   :target-path "target/%s"
 
@@ -22,6 +21,7 @@
   :plugins [[lein-cljsbuild "1.1.6"]]
 
   :profiles {:dev {:dependencies [[binaryage/devtools "0.9.4"]
+                                  [figwheel-sidecar "0.5.12-SNAPSHOT"]
                                   [devcards "0.2.3"]]
                    :source-paths ["src/dev"]}}
 
