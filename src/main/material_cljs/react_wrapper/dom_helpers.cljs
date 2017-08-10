@@ -10,6 +10,7 @@
 (def div (factory "div"))
 (def section (factory "section"))
 (def header (factory "header"))
+(def a (factory "a"))
 
 
 (def button (factory "button"))

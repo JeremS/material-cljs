@@ -14,17 +14,46 @@
             [material-cljs.react.icons :as icons]))
 
 ;; TODO: find a way to assign react keys to component that don't have one in their props
+;; TODO: revamp all props specs in one namspace for reuse
+;; reworks
 
 (enable-console-print!)
 
 
+;<a href="#" class="material-icons mdc-toolbar__icon" aria-label="Download" alt="Download">file_download</a>
+;<a href="#" class="material-icons mdc-toolbar__icon" aria-label="Print this page" alt="Print this page">print</a>
+;<a href="#" class="material-icons mdc-toolbar__icon" aria-label="Bookmark this page" alt="Bookmark this page">more_vert</a>
+
 (defn toolbar []
   (toolbar/mdc-toolbar {:key "toolbar" :fixed true :waterfall true}
     (toolbar/mdc-toolbar-row {:key "toolbarRow1"}
-      (toolbar/mdc-toolbar-section {:key "toolbarRow1Section1"}
+      (toolbar/mdc-toolbar-section {:key "menu"
+                                    :align :start
+                                    :shrink true}
+        (toolbar/mdc-toolbar-icon {:icon-ctor icons/mdc-g-font-icon
+                                   :menu true
+                                   :element dom/a
+                                   :href "#"
+                                   :key "menu"} "menu"))
+      (toolbar/mdc-toolbar-section {:key "title"}
         (toolbar/mdc-toolbar-title {:key "toolbarRow1Section1Title"
                                     :element dom/h1}
-                                   "Numbers")))))
+                                   "Numbers"))
+      (toolbar/mdc-toolbar-section {:key "links"
+                                    :align :end
+                                    :shrink true}
+        (toolbar/mdc-toolbar-icon {:icon-ctor icons/mdc-g-font-icon
+                                   :element dom/a
+                                   :href "#"
+                                   :key "dl-link"} "file_download")
+        (toolbar/mdc-toolbar-icon {:icon-ctor icons/mdc-g-font-icon
+                                   :element dom/a
+                                   :href "#"
+                                   :key "print-link"} "print")
+        (toolbar/mdc-toolbar-icon {:icon-ctor icons/mdc-g-font-icon
+                                   :element dom/a
+                                   :href "#"
+                                   :key "more-link"} "more_vert")))))
 
 (defn textfields []
   [(grid/mdc-grid-inner {:key "textfieldLine1"}

@@ -11,7 +11,6 @@
 
 ;; TODO: implement toolbar icons
 ;; TODO: toolbar flexible
-;; TODO: maybe check that :fixed is true when :fixed-last-row or :waterfal are
 
 ;; TODO: Waterfall doesn't work properly
 (def foundation-c (o/get toolbar-f "default"))
@@ -171,3 +170,25 @@
 ;; ---------------------------------------------------------------------------------------------------------------------
 
 ;; TODO: define component for icons
+
+(s/def ::icon-ctor fn?)
+(s/def ::menu boolean?)
+(s/def ::toolbar-icons-props (s/keys :req-un [::icon-ctor]
+                                     :opt-un [::menu]))
+
+(def default-icon-props
+  {:size 24})
+
+(w/def-component ToolbarIcon
+  (render [this]
+          (let [props (u/ensure-props (w/props this) default-icon-props)
+                mdc-class (if (:menu props)
+                            "mdc-toolbar__icon--menu"
+                            "mdc-toolbar__icon")]
+            (u/render-container this (:icon-ctor props) {:className mdc-class
+                                                         :size (:size props)
+                                                         ::u/props-filter [:icon-ctor :menu]}))))
+
+
+(w/def-constructor mdc-toolbar-icon ToolbarIcon :spec ::toolbar-icons-props)
+
