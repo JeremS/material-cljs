@@ -38,7 +38,7 @@
       (toolbar/mdc-toolbar-section {:key "title"}
         (toolbar/mdc-toolbar-title {:key "toolbarRow1Section1Title"
                                     :element dom/h1}
-                                   "Numbers"))
+                                   "Material Cljs"))
       (toolbar/mdc-toolbar-section {:key "links"
                                     :align :end
                                     :shrink true}
@@ -155,7 +155,7 @@
 
 
 (defn cards []
-  (grid/mdc-grid-inner {:key "cardsLine"}
+  [(grid/mdc-grid-inner {:key "cardsLine1"}
     (grid/mdc-grid-cell {:key "1" :span 6 :align :middle}
       (card/mdc-card {:key "card"}
         (card/mdc-card-header {:key "header"}
@@ -168,14 +168,27 @@
 
 
     (grid/mdc-grid-cell {:key "2" :span 6 :align :middle}
-      (card/mdc-card {:horizontal true :key "card"}
-        (card/mdc-card-header {:key "header"}
-          (card/mdc-card-title {:key "title" :large-title true} "Horizontal card")
-          (card/mdc-card-sub-title {:key "subtitle"} "With vertical actions"))
-        (card/mdc-card-text {:key "text"} lorem-ipsum)
-        (card/mdc-card-actions {:key "actions" :vertical true}
-          (card/mdc-card-action-button {:key "Action1"} "Action1")
-          (card/mdc-card-action-button {:key "Action2"} "Action2"))))))
+      (card/mdc-card {:key "card"}
+        (card/mdc-card-horizontal-block {:key "hBlock"}
+          (card/mdc-card-header {:key "header"}
+            (card/mdc-card-title {:key "title" :large-title true} "Horizontal card")
+            (card/mdc-card-sub-title {:key "subtitle"} "With vertical actions"))
+          (card/mdc-card-text {:key "text"} lorem-ipsum)
+          (card/mdc-card-actions {:key "actions" :vertical true}
+            (card/mdc-card-action-button {:key "Action1"} "Action1")
+            (card/mdc-card-action-button {:key "Action2"} "Action2"))))))
+
+   (grid/mdc-grid-inner {:key "cardsLine2"}
+     (grid/mdc-grid-cell {:key "1" :span 6 :align :middle}
+       (card/mdc-card {:key "card"}
+         (card/mdc-card-horizontal-block {:key "HB"}
+           (card/mdc-card-header {:key "header"}
+             (card/mdc-card-title {:key "title" :large-title true} "H Card")
+             (card/mdc-card-sub-title {:key "subtitle"} "With actions out of HB"))
+           (card/mdc-card-text {:key "text"} lorem-ipsum))
+         (card/mdc-card-actions {:key "actions"}
+           (card/mdc-card-action-button {:key "Action1"} "Action1")
+           (card/mdc-card-action-button {:key "Action2"} "Action2")))))])
 
 
 

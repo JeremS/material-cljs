@@ -8,24 +8,20 @@
 
 ;; TODO: Try to fix the display of supporting text in horizontal cards
 ;; ---------------------------------------------------------------------------------------------------------------------
-(defn card-classes [props]
-  (u/mdc-classes
-    "mdc-card"
-    (u/mdc-classes-from-props props
-      {:horizontal (constantly "mdc-card__horizontal-block")})))
 
 (w/def-component Card
   (render [this]
     (let [props (w/props this)]
-      (u/render-container this dom/div {:className (card-classes props)
-                                        ::u/props-filter [:horizontal]}))))
+      (u/render-container this dom/div {:className "mdc-card"}))))
 
-(s/def ::horizontal boolean?)
-(s/def ::card-props (s/keys :opt-un [::horizontal]))
+(w/def-constructor mdc-card Card)
 
+;; ---------------------------------------------------------------------------------------------------------------------
+(w/def-component CardHorizontalBlock
+  (render [this]
+    (u/render-container this dom/div {:className "mdc-card__horizontal-block"})))
 
-(w/def-constructor mdc-card Card :spec ::card-props)
-
+(w/def-constructor mdc-card-horizontal-block CardHorizontalBlock)
 
 ;; ---------------------------------------------------------------------------------------------------------------------
 (w/def-component CardHeader
